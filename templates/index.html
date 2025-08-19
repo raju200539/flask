@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Padidapu Venkata Pathiraju | DevOps Portfolio</title>
+
+  <!-- TailwindCSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-teal-600 text-white p-4 flex justify-between items-center">
+    <div class="text-xl font-bold">Padidapu Venkata Pathiraju</div>
+    <div class="space-x-4">
+      <a href="#about" class="hover:underline">About</a>
+      <a href="#skills" class="hover:underline">Skills</a>
+      <a href="#projects" class="hover:underline">Projects</a>
+      <a href="#tasks" class="hover:underline">Tasks</a>
+      <a href="#internship" class="hover:underline">Internship</a>
+      <a href="#education" class="hover:underline">Education</a>
+      <a href="#contact" class="hover:underline">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="text-center py-20 bg-gradient-to-r from-teal-500 to-blue-700 text-white">
+    <h1 class="text-4xl font-bold fade-in">Hi, I'm Padidapu Venkata Pathiraju</h1>
+    <p class="mt-4 text-lg">Aspiring DevOps Engineer | AWS • CI/CD • Docker • Kubernetes</p>
+    <a href="#contact" class="mt-6 inline-block btn btn--primary">Get in Touch</a>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">About Me</h2>
+    <p>{{ summary }}</p>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">Skills</h2>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      {% for skill in skills %}
+        <li class="card-soft p-3">{{ skill }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">Projects</h2>
+    <div class="space-y-4">
+      {% for project in projects %}
+        <div class="p-4 bg-white rounded-lg shadow">
+          <h3 class="font-semibold">{{ project.title }}</h3>
+          <p class="mt-1 text-slate-700">{{ project.desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Tasks & Learnings -->
+  <section id="tasks" class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">Tasks & Learnings</h2>
+    <ul class="list-disc pl-6 space-y-1">
+      {% for task in tasks_learnings %}
+        <li>{{ task }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Internship -->
+  <section id="internship" class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">Internship</h2>
+    <div class="p-4 bg-white rounded-lg shadow">
+      <h3 class="font-semibold">{{ internship.title }}</h3>
+      <p class="mt-1 text-slate-700">{{ internship.desc }}</p>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">Education</h2>
+    <ul class="space-y-2">
+      {% for edu in education %}
+        <li class="card-soft p-3">
+          <strong>{{ edu.degree }}</strong> – {{ edu.inst }} ({{ edu.years }})
+          {% if edu.cgpa %} | CGPA: {{ edu.cgpa }}{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="max-w-4xl mx-auto p-6 text-center">
+    <h2 class="text-2xl font-bold mb-4 text-teal-700">Contact</h2>
+    <p>Email: <a href="mailto:{{ contacts.email }}" class="text-blue-600">{{ contacts.email }}</a></p>
+    <p>Phone: {{ contacts.phone }}</p>
+    <p>Location: {{ contacts.location }}</p>
+    <div class="mt-4">
+      <a href="{{ contacts.github }}" target="_blank" class="text-teal-600 font-semibold">GitHub</a> |
+      <a href="{{ contacts.linkedin }}" target="_blank" class="text-teal-600 font-semibold">LinkedIn</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 bg-gray-100 mt-10">
+    <p>&copy; 2025 Padidapu Venkata Pathiraju</p>
+  </footer>
+
+</body>
+</html>
