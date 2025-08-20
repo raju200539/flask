@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-portfolio-deployment
+  labels:
+    app: flask-portfolio
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-portfolio
+  template:
+    metadata:
+      labels:
+        app: flask-portfolio
+    spec:
+      containers:
+        - name: flask-portfolio
+          image: docker.io/raju200539/flask-portfolio:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
