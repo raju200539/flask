@@ -31,6 +31,10 @@ projects = [
     {
         "title": "CI/CD Pipeline Practice – Sample App (2025)",
         "desc": "Built a Jenkins pipeline for automated build, test, and deployment of a Node.js app. Deployed containerized app on AWS EC2 with Docker."
+    },
+    {
+        "title": "CI/CD Pipeline Practice – Flask app (2025)",
+        "desc": "Created a github Action to deploy automaticalyDeployed containerized app on AWS EC2 with Docker."
     }
 ]
 
