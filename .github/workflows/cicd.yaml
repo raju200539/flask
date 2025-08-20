@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline - Flask Portfolio
 
 on:
   push:
@@ -9,12 +9,14 @@ env:
   REGISTRY: docker.io
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Build & Push Docker image
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -32,37 +34,20 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # Deploy to EC2 Kubernetes
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Set up Kubeconfig
+      - name: Deploy to EC2
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > ~/.kube/config
-
-      - name: Set up Kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_DATA }}" > ~/.kube/config
-      
-      - name: Debug kubeconfig
-        run: |
-          echo "---- Kubeconfig Start ----"
-          head -n 20 ~/.kube/config
-          echo "---- Kubeconfig End ----"
-
-
-      - name: Deploy to Kubernetes
-        run: |
-          # Apply manifests
-          kubectl apply -f deployment.yaml
-          kubectl apply -f service.yaml
-          
-          kubectl set image deployment/flask-portfolio-deployment \
-            flask-portfolio=${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+            cd ~/k8s
+            # Update deployment with new image
+            sed -i "s|image: .*|image: ${REGISTRY}/${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:latest|g" deployment.yaml
+            kubectl apply -f deployment.yaml
+            kubectl apply -f service.yaml
+            kubectl rollout restart deployment flask-portfolio
+          EOF
