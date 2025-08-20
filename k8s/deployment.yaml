@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: flask-portfolio
-          image: docker.io/raju200539/flask-portfolio:latest
+          image: docker.io/rajupadidapu/flask-portfolio:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
