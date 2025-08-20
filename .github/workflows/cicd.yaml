@@ -47,7 +47,7 @@ jobs:
             cd ~/k8s
             # Update deployment with new image
             sed -i "s|image: .*|image: ${REGISTRY}/${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:latest|g" deployment.yaml
-            kubectl apply -f deployment.yaml
-            kubectl apply -f service.yaml
+            sudo kubectl apply -f deployment.yaml
+            sudo kubectl apply -f service.yaml
             kubectl rollout restart deployment flask-portfolio
           EOF
