@@ -46,7 +46,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
             cd ~/k8s
             # Update deployment with new image
-            sed -i "s|image: .*|image: ${REGISTRY}/${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:latest|g" deployment.yaml
+            sudo sed -i "s|image: .*|image: ${REGISTRY}/${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}:latest|g" deployment.yaml
             sudo kubectl apply -f deployment.yaml
             sudo kubectl apply -f service.yaml
             sudo kubectl rollout restart deployment flask-portfolio
