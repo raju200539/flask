@@ -44,7 +44,19 @@ jobs:
       - name: Set up Kubeconfig
         run: |
           mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > ~/.kube/config
+
+      - name: Set up Kubeconfig
+        run: |
+          mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG_DATA }}" > ~/.kube/config
+      
+      - name: Debug kubeconfig
+        run: |
+          echo "---- Kubeconfig Start ----"
+          head -n 20 ~/.kube/config
+          echo "---- Kubeconfig End ----"
+
 
       - name: Deploy to Kubernetes
         run: |
